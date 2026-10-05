@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Http\Requests\CompanyCreateRequest;
 use App\Http\Requests\CompanyUpdateRequest;
+use App\Models\JobApplication;
 
 class companyController extends Controller
 {
@@ -39,6 +40,7 @@ class companyController extends Controller
     public function store(CompanyCreateRequest $request)
     {
        $validate=$request->validated();
+       $validate['ownerId'] = $validate['ownerId'] ?? auth()->id();
        Company::create($validate);
        return redirect()->route('company.index')->with('success','Company created successfully');
     }
@@ -48,8 +50,10 @@ class companyController extends Controller
      */
     public function show(string $id)
     {
-        $company=Company::findOrFail($id);
-        return view('company.show',compact('company'));
+        $company = Company::with(['jobs', 'applications.jobVacancy', 'applications.user'])->findOrFail($id);
+        $applications = $company->applications;
+
+        return view('company.show', compact('company', 'applications'));
     }
 
     /**
@@ -69,7 +73,11 @@ class companyController extends Controller
         $validated= $request->validated();
         $company= Company::findOrFail($id);
         $company->update($validated);
-        return redirect()->route('company.index')->with('success','Company updated successfully');
+        if($request->query('redirectToList')=='true'){
+            return redirect()->route('company.index')->with('success','Company updated successfully');
+        }   
+        
+        return redirect()->route('company.show',$id)->with('success','Company updated successfully');
     }
 
     /**
@@ -79,7 +87,7 @@ class companyController extends Controller
     {
         $company=Company::findOrFail($id);
         $company->delete();
-        return redirect()->route('company.index')->with('success','Company deleted successfully');
+        return redirect()->route('company.index')->with('success','Company archived successfully');
     }
 
     public function restore(string $id){

@@ -35,7 +35,7 @@
                     <!-- Create Company -->
                     <a
                         href="{{ route('company.create') }}"
-                        class="inline-flex items-center px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+                        class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
                         Create New Company +
                     </a>
 
@@ -115,7 +115,7 @@
 
                                         <button
                                             type="submit"
-                                            class="text-green-600 hover:text-green-900 bg-green-200 px-2 py-1 rounded">
+                                            class="text-white bg-green-600 hover:bg-green-800 px-2 py-1 rounded">
                                             Restore ↩️
                                         </button>
 
@@ -125,8 +125,8 @@
 
                                     <!-- Edit -->
                                     <a
-                                        href="{{ route('company.edit', $company->id) }}"
-                                        class="text-blue-600 hover:text-blue-900 bg-blue-200 px-2 py-1 rounded">
+                                        href="{{ route('company.edit', ['company' => $company->id, 'redirectToList' => 'true']) }}"
+                                        class="text-white bg-blue-600 hover:bg-blue-800 px-2 py-1 rounded">
                                         Edit 🖊️
                                     </a>
 
@@ -140,7 +140,7 @@
 
                                         <button
                                             type="submit"
-                                            class="text-red-600 hover:text-red-900 bg-red-200 px-2 py-1 rounded">
+                                            class="text-white bg-red-600 hover:bg-red-800 px-2 py-1 rounded">
                                             Archive 🗑️
                                         </button>
 

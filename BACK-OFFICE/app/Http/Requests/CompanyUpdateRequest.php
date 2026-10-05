@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CompanyUpdateRequest extends FormRequest
 {
@@ -22,21 +23,28 @@ class CompanyUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $companyId = $this->route('company');
+
         return [
-            'name' => 'required|string|max:100|unique:companies,name'. $this->id,
-            'address' => 'required|string|max:255',
-            'industry_id' => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('companies', 'name')->ignore($companyId),
+            ],
+            'address' => 'nullable|string|max:255',
+            'industry' => 'required|string|max:255',
             'website' => 'nullable|string|max:100|url',
         ];
     }
+
     public function messages()
     {
         return [
             'name.required' => 'Name is required',
             'name.unique' => 'Name already exists',
             'address.required' => 'Address is required',
-            'industry_id.required' => 'Industry ID is required',
-          
+            'industry.required' => 'Industry is required',
             'website.url' => 'Website is invalid',
             'website.max' => 'Website is too long',
         ];

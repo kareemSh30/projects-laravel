@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
-
-class company extends Model
+class Company extends Model
 {
     use SoftDeletes, HasFactory, HasUuids;
 
@@ -28,7 +28,9 @@ class company extends Model
         'ownerId',
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+    ];
 
     protected function casts(): array
     {
@@ -42,9 +44,13 @@ class company extends Model
         return $this->belongsTo(User::class, 'ownerId');
     }
 
-    public function jobVacancies(): hasMany
+    public function jobs(): HasMany
     {
-        return $this->hasMany(JobVacncy::class, 'companyId','id');
+        return $this->hasMany(JobVacancy::class, 'companyId', 'id');
     }
 
+    public function applications(): HasManyThrough
+    {
+        return $this->hasManyThrough(JobApplication::class, JobVacancy::class, 'companyId', 'jobVacancyId', 'id', 'id');
+    }
 }

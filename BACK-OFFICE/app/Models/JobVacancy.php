@@ -7,16 +7,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
-
-class JobVacncy extends Model
+class JobVacancy extends Model
 {
     use SoftDeletes, HasFactory, HasUuids;
 
-    protected $table = "job_vacancies";
-
+    protected $table = 'job_vacancies';
 
     protected $keyType = 'string';
 
@@ -34,26 +31,25 @@ class JobVacncy extends Model
 
     protected $dates = ['deleted_at'];
 
-     protected function casts(): array
+    protected function casts(): array
     {
         return [
             'deleted_at' => 'datetime',
         ];
     }
 
-  
     public function jobCategory(): BelongsTo
     {
-        return $this->belongsTo('App\\Models\\JobCategory', 'categoryId', 'id');
+        return $this->belongsTo(JobCategory::class, 'categoryId', 'id');
     }
 
     public function company(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'companyId','id');
-    }
-    public function jobApplications(): hasMany
-    {
-        return $this->hasMany(JobApplication::class, 'jobVacancyId','id');
+        return $this->belongsTo(Company::class, 'companyId', 'id');
     }
 
+    public function jobApplications(): HasMany
+    {
+        return $this->hasMany(JobApplication::class, 'jobVacancyId', 'id');
+    }
 }

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\JobCategory;
 use App\Models\Company;
-use App\Models\JobVacncy;
+use App\Models\JobVacancy;
 use App\Models\Resume;
 use App\Models\JobApplication;
 use Illuminate\Database\Seeder;
@@ -116,7 +116,7 @@ class DatabaseSeeder extends Seeder
             )->firstOrFail();
 
             // Create vacancy
-            JobVacncy::firstOrCreate(
+            JobVacancy::firstOrCreate(
                 [
                     'title' => $jobsVacancyData['title'],
                     'companyId' => $company->id,
@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
             |--------------------------------------------------------------------------
             */
 
-            $jobsVacancy = JobVacncy::inRandomOrder()->firstOrFail();
+            $jobsVacancy = JobVacancy::inRandomOrder()->firstOrFail();
 
             /*
             |--------------------------------------------------------------------------
